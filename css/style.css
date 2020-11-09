@@ -30,8 +30,9 @@ li{
     margin: 20px;
     font-size: 30px;
     font-weight: bolder;
+    padding-top: 200px;
 }
 .navpush{
-    margin-right: 400px;
+    padding-left: 800px;
     
 }
