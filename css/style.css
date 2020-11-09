@@ -1,19 +1,37 @@
 body{
     background-color: lightblue;
 }
-/* li{
-    display: inline;
-   
-   
-  
-} */
-
-/* .navpush{
-    margin-left: 400px;
-   
-} */
+#result{
+    width: 400px;
+    height: 800px;
+    border-right: black;
+    font-size: 20px;
+    font-weight: bold;
+}
 #container{
     float: right;
     padding: 20px;
     margin-top: 20px;
+    display: block;
+    padding: 30px;
+} 
+li{ 
+    color:black;
+   
+}
+#chart{
+    width: 400px;
+    height: 200px;
+    border: black;
+    padding: 30px;
+}
+.navbar li{
+    display: inline;
+    margin: 20px;
+    font-size: 30px;
+    font-weight: bolder;
+}
+.navpush{
+    margin-right: 400px;
+    
 }
