@@ -6,8 +6,11 @@ var imgTwoElement = document.getElementById('image-two');
 var imgThreeElement = document.getElementById('image-three');
 var listElement = document.getElementById('lists');
 var clickCounter = 0;
-var previousNumber =[];
+var previousNumber = [];
 var allImage = [];
+var allNamesArray = [];
+var finalVotesArray = [];
+var finalViewsArray = [];
 
 var Photo = function (name, endOfFile) {
     this.filepath = `img/${name}.${endOfFile}`;
@@ -76,7 +79,7 @@ function render() {
 
 function imageClick(event) {
     clickCounter++;
-    if (clickCounter <26) {
+    if (clickCounter  <5) {
         var title = event.target.title;
 
         for (var i = 0; i < allImage.length; i++) {
@@ -86,6 +89,10 @@ function imageClick(event) {
             
 
         }
+
+        
+        generateChartData();
+        generateChart();
         render();
        
     }
@@ -101,60 +108,70 @@ function imageClick(event) {
     }
 }
 containerElement.addEventListener('click', imageClick);
+function generateChartData(){
+    for (var i=0; i<allImage.length; i++){
+        allNamesArray.push(allImage[i].alt);
+        finalVotesArray.push(allImage[i].vote);
+        finalViewsArray.push(allImage[i].view);
+    }
+
+}
+
+function generateChart(){
+    
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: allNamesArray,
+            datasets: [{
+                label: ' Votes',
+                data: finalViewsArray,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+           
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    
+}
 
 render();
 
-
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-       
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-// let chart = new Chart(ctx, {
-//     type: 'line',
-//     data: data,
-//     options: {
-//         layout: {
-//             padding: {
-//                 left: 100,
-//                 right: 100,
-//                 top: 50,
-//                 bottom: 0
-//             }
-//         }
-//     }
-// });
