@@ -49,17 +49,17 @@ function render() {
     var secondRandomIndexNumber = randomIndexGenerator();
     var thirdRandomIndexNumber = randomIndexGenerator();
 
-    while (secondRandomIndexNumber === firstRandomIndexNumber ||previousNumber.includes(secondRandomIndexNumber)) {
+    while (secondRandomIndexNumber === firstRandomIndexNumber || previousNumber.includes(secondRandomIndexNumber)) {
         secondRandomIndexNumber = randomIndexGenerator();
-    } 
+    }
     allImage[secondRandomIndexNumber].view++;
-    while (thirdRandomIndexNumber === secondRandomIndexNumber ||previousNumber.includes(thirdRandomIndexNumber)) {
+    while (thirdRandomIndexNumber === secondRandomIndexNumber || previousNumber.includes(thirdRandomIndexNumber)) {
         thirdRandomIndexNumber = randomIndexGenerator();
-    } 
+    }
     allImage[thirdRandomIndexNumber].view++;
-    while (firstRandomIndexNumber === thirdRandomIndexNumber ||previousNumber.includes(firstRandomIndexNumber)) {
+    while (firstRandomIndexNumber === thirdRandomIndexNumber || previousNumber.includes(firstRandomIndexNumber)) {
         firstRandomIndexNumber = randomIndexGenerator();
-       
+
     }
     allImage[firstRandomIndexNumber].view++;
     // console.log(allImage[firstRandomIndexNumber].view,allImage[secondRandomIndexNumber].view,allImage[thirdRandomIndexNumber].view);
@@ -79,54 +79,91 @@ function render() {
 
 function imageClick(event) {
     clickCounter++;
-    if (clickCounter  <5) {
+    if (clickCounter < 5) {
         var title = event.target.title;
 
         for (var i = 0; i < allImage.length; i++) {
             if (allImage[i].title === title) {
                 allImage[i].vote++;
             }
-            
+
 
         }
-
-        
-        generateChartData();
-        generateChart();
+      
         render();
-       
+
     }
     else {
         containerElement.removeEventListener('click', imageClick);
         for (var i = 0; i < allImage.length; i++) {
             var liElement = document.createElement('li');
-            liElement.textContent = ` ${allImage[i].alt} : had ${allImage[i].vote} vote and ${allImage[i].view} views.`;
+            liElement.textContent = ` ${allImage[i].alt} : ${allImage[i].vote} vote and ${allImage[i].view} views.`;
             listElement.appendChild(liElement);
 
         }
+       
 
+        generateChartData();
+        generateChart();
     }
 }
 containerElement.addEventListener('click', imageClick);
-function generateChartData(){
-    for (var i=0; i<allImage.length; i++){
-        allNamesArray.push(allImage[i].alt);
-        finalVotesArray.push(allImage[i].vote);
-        finalViewsArray.push(allImage[i].view);
-    }
+
+function generateChartData() {
+     if (localStorage.getItem('image')){
+         //console.log('pull from storage');
+        var imageFromLocalStorage = localStorage.getItem('image');
+        var parsedImage = JSON.parse(imageFromLocalStorage);
+        //generateNewImage(parsedImage)
+        for (var i = 0; i < allImage.length; i++) {
+            allImage[i].vote += parsedImage[i].vote
+            allImage[i].view += parsedImage[i].view
+            allNamesArray.push(allImage[i].alt);
+            finalVotesArray.push(allImage[i].vote);
+           
+    
+        }
+        getImageInLocalStorage();
+     }
+     else{
+         //console.log('not pulled from storage');
+        for (var i = 0; i < allImage.length; i++) {
+            allNamesArray.push(allImage[i].alt);
+            finalVotesArray.push(allImage[i].vote);
+           
+    
+        }
+        getImageInLocalStorage();
+     }
+
+    
 
 }
+function getImageInLocalStorage() {
+    var stringImage = JSON.stringify(allImage);
+    localStorage.setItem('image', stringImage)
+}
 
-function generateChart(){
-    
+function generateNewImage(image){
+    //allImage = [];
+    for(var i=0; i<image.length; i++){
+        console.log(image[i]);
+        new Photo(image[i].name, image[i].endOfFile);
+    }
+}
+
+function generateChart() {
+
     var ctx = document.getElementById('myChart').getContext('2d');
+    ctx.canvas.width = 900;
+    ctx.canvas.height = 300; 
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: allNamesArray,
             datasets: [{
-                label: ' Votes',
-                data: finalViewsArray,
+                label: 'votes',
+                data: finalVotesArray,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -160,7 +197,7 @@ function generateChart(){
             }]
         },
         options: {
-           
+
             scales: {
                 yAxes: [{
                     ticks: {
@@ -170,7 +207,7 @@ function generateChart(){
             }
         }
     });
-    
+
 }
 
 render();
