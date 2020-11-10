@@ -1,0 +1,19 @@
+body{
+    background-color: lightblue;
+}
+/* li{
+    display: inline;
+   
+   
+  
+} */
+
+/* .navpush{
+    margin-left: 400px;
+   
+} */
+#container{
+    float: right;
+    padding: 20px;
+    margin-top: 20px;
+}
